@@ -1,8 +1,10 @@
 #include <Arduino.h>
 #include <Wire.h>
-#include <LSM6DSL.h> // https://github.com/dycodex/LSM6DSL-Arduino
 #include <Servo.h>
 #include <math.h>
+
+#include <LSM6DSL.h> // https://github.com/dycodex/LSM6DSL-Arduino
+
 
 
 // Using I2C mode by default.
