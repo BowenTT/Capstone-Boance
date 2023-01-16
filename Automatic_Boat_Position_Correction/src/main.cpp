@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <math.h>
 #include <../hal/Accelerometer.hpp>
 #include <../hal/Gyroscope.hpp>
 #include <LSM6DSL-Arduino/src/LSM6DSL.h>
@@ -29,6 +30,14 @@ void setup()
 
 void loop() 
 {
+
+  float RADIANS_TO_DEGREES = 180/M_PI;
+
+  Position accel = a.Read();
+  float roll = atan(-1*accel.x/sqrt(pow(accel.y,2) + pow(accel.z,2))) * RADIANS_TO_DEGREES;
+
+  Serial.print("roll = ");
+  Serial.println(roll);
   // Serial.print("X: ");
   // Serial.println(a.GetAccelerationX());
   // Serial.print("Y = ");

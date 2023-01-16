@@ -10,19 +10,6 @@ SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 {
 }
 
-int SensorProcessor::Initialize()
-{
-    LSM6DSL imu(LSM6DSL_MODE_I2C, 0x6B);
-
-    if(!imu.begin())
-    {
-        return -1;
-    }
-
-    return 0;
-}
-
-
 /*
     Calibrates the offsets of the LSM6DSL Accelerometer + Gyroscope by taking nrOfSamples 
     Offset gets used to counteract the bias instability of the sensor
