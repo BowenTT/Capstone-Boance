@@ -1,15 +1,17 @@
 #ifndef _SENSOR_PROCESSOR_H
 #define _SENSOR_PROCESSOR_H
 
+#include "../interfaces/IAccelerometer.hpp"
+#include "../interfaces/IGyroscope.hpp"
 #include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
-#include "../POSITION.hpp"
 
 class SensorProcessor
 {
     public:
-        SensorProcessor(LSM6DSL sensor){}
+        SensorProcessor(IAccelerometer& accel, IGyroscope& gyro){}
         ~SensorProcessor(){}
 
+        int Initialize();
         void Calibrate(int nrOfSamples, int accelSens);
 
         Position GetFilteredRotation();
@@ -18,6 +20,9 @@ class SensorProcessor
         Position GetLastRotationReadings(int nrOfReadings);
 
     private:
+
+        IAccelerometer& accelerometer;
+        IGyroscope& gyroscope;
 
         position lastRotation;
         unsigned long currentTime;

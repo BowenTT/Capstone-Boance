@@ -1,5 +1,27 @@
 #include "../hal/SensorProcessor.hpp"
 
+SensorProcessor::SensorProcessor(IAccelerometer& accel, IAccelerometer& gyro)
+:accelerometer(accel)
+,gyroscope(gyro)
+,lastRotation(Position{0,0,0})
+,currentTime(millis())
+,previousTime(0)
+,elapsedTime(0)
+{
+}
+
+int SensorProcessor::Initialize()
+{
+    LSM6DSL imu(LSM6DSL_MODE_I2C, 0x6B);
+
+    if(!imu.begin())
+    {
+        return -1;
+    }
+
+    return 0;
+}
+
 
 /*
     Calibrates the offsets of the LSM6DSL Accelerometer + Gyroscope by taking nrOfSamples 
@@ -17,11 +39,7 @@ void SensorProcessor::Calibrate(int nrOfSamples, int accelSens)
 */
 float SensorProcessor::GetLastAccelReadings(int nrOfReadings)
 {
-    float average = 0;
-    for(int i = 0; i < nrOfReadings; i++)
-    {
-        Position accelValues = 
-    }
+    //TODO
 }
 
 /* 
