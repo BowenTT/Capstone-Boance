@@ -50,6 +50,7 @@
 #define LSM6DSL_GYRO_Z_HIGH_VALUE               5
 #define BYTE                                    8
 #define SIXTEEN_BIT                             32767
+#define LSM6DSL_DEFAULT_ADDRESS                 0x6B
 
 #define LSM6DSL_ACC_GYRO_TAP_CFG                0x58
 #define LSM6DSL_ACC_GYRO_WAKE_UP_SRC            0x1B

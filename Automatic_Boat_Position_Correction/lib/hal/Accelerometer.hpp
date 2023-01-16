@@ -4,12 +4,15 @@
 #include "../interfaces/IAccelerometer.hpp"
 #include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
 #include "../libraries/I2Cdev.hpp"
+#include "Sensor_Settings.h"
 
 class Accelerometer : public IAccelerometer
 {
     public:
         Accelerometer(uint8_t devAddr, int16_t min_value, int16_t max_value);
         ~Accelerometer(){}
+
+        void Setup();
 
         Position Read();
         int16_t GetAccelerationX();

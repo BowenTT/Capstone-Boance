@@ -3,9 +3,8 @@
 #include <../hal/Gyroscope.hpp>
 #include <LSM6DSL-Arduino/src/LSM6DSL.h>
 
-Accelerometer a(0x6B, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
-Gyroscope g(0x6B, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
-LSM6DSL imu(LSM6DSL_MODE_I2C, 0x6B);
+Accelerometer a(LSM6DSL_DEFAULT_ADDRESS, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
+Gyroscope g(LSM6DSL_DEFAULT_ADDRESS, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
 
 void setup() 
 {
@@ -16,11 +15,13 @@ void setup()
     //Do nothing
   }
 
-  lsm6dsl_status_t status = imu.begin();
-  if(status != IMU_SUCCESS)
-  {
-    Serial.println(status);
-  }
+  a.Setup();
+  Serial.print("ACCEL SENS = ");
+  Serial.println(a.GetSensitivity());
+
+  g.Setup();
+  Serial.print("GYRO SENS = ");
+  Serial.println(g.GetSensitivity());
 
   Serial.println("START");
 
@@ -28,12 +29,12 @@ void setup()
 
 void loop() 
 {
-  Serial.print("X: ");
-  Serial.println(a.GetAccelerationX());
-  Serial.print("Y = ");
-  Serial.println(a.GetAccelerationY());
-  Serial.print("Z = ");
-  Serial.println(a.GetAccelerationZ());
+  // Serial.print("X: ");
+  // Serial.println(a.GetAccelerationX());
+  // Serial.print("Y = ");
+  // Serial.println(a.GetAccelerationY());
+  // Serial.print("Z = ");
+  // Serial.println(a.GetAccelerationZ());
 
 
   // Serial.print("X: ");

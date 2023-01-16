@@ -39,8 +39,8 @@ void SensorProcessor::Calibrate(int nrOfSamples, int accelSens)
 */
 float SensorProcessor::GetLastAccelReadings(int nrOfReadings)
 {
-    Position pos = accelerometer.Read();
-    return pos.x;
+    //TODO
+    return 0.0;
 }
 
 /* 

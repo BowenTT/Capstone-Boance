@@ -5,6 +5,7 @@
 #include "../interfaces/IGyroscope.hpp"
 #include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
 #include "../libraries/I2Cdev.hpp"
+#include "Sensor_Settings.h"
 
 
 class Gyroscope : public IGyroscope
@@ -12,6 +13,8 @@ class Gyroscope : public IGyroscope
 public:
     Gyroscope(uint8_t devAddr, int16_t min_value, int16_t max_value);
     ~Gyroscope(){}
+
+    void Setup();
 
     Position Read();
     int16_t GetRotationX();
