@@ -1,6 +1,6 @@
 #include "../hal/SensorProcessor.hpp"
 
-SensorProcessor::SensorProcessor(IAccelerometer& accel, IAccelerometer& gyro)
+SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 :accelerometer(accel)
 ,gyroscope(gyro)
 ,lastRotation(Position{0,0,0})

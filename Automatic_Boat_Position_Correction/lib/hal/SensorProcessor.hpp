@@ -3,12 +3,12 @@
 
 #include "../interfaces/IAccelerometer.hpp"
 #include "../interfaces/IGyroscope.hpp"
-#include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../LSM6DSL-Arduino/src/LSM6DSL.h"
 
 class SensorProcessor
 {
     public:
-        SensorProcessor(IAccelerometer& accel, IGyroscope& gyro){}
+        SensorProcessor(IAccelerometer& accel, IGyroscope& gyro);
         ~SensorProcessor(){}
 
         int Initialize();
@@ -24,9 +24,11 @@ class SensorProcessor
         IAccelerometer& accelerometer;
         IGyroscope& gyroscope;
 
-        position lastRotation;
+        Position lastRotation;
         unsigned long currentTime;
         unsigned long previousTime;
         unsigned long elapsedTime;
 
-}
+};
+
+#endif

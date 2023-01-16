@@ -3,7 +3,8 @@
 
 
 #include "../interfaces/IGyroscope.hpp"
-#include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../LSM6DSL-Arduino/src/LSM6DSL.h"
+
 
 class Gyroscope : public IGyroscope
 {
