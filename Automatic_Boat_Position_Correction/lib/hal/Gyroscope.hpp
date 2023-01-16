@@ -3,13 +3,14 @@
 
 
 #include "../interfaces/IGyroscope.hpp"
-#include "../LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../libraries/I2Cdev.hpp"
 
 
 class Gyroscope : public IGyroscope
 {
 public:
-    Gyroscope(int16_t min_value, int16_t max_value);
+    Gyroscope(uint8_t devAddr, int16_t min_value, int16_t max_value);
     ~Gyroscope(){}
 
     Position Read();
@@ -25,6 +26,7 @@ public:
     int SetOffset(int16_t x, int16_t y, int16_t z);
 
 private:
+    uint8_t devAddr;
     uint8_t buffer[14];
     int min_value;
     int max_value;

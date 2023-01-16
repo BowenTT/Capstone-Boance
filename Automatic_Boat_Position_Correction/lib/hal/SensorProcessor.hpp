@@ -3,7 +3,7 @@
 
 #include "../interfaces/IAccelerometer.hpp"
 #include "../interfaces/IGyroscope.hpp"
-#include "../LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
 
 class SensorProcessor
 {

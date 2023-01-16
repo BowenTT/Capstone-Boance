@@ -1,7 +1,8 @@
 #include "Accelerometer.hpp"
 
-Accelerometer::Accelerometer(int16_t min_value, int16_t max_value)
-:min_value(min_value)
+Accelerometer::Accelerometer(uint8_t devAddr, int16_t min_value, int16_t max_value)
+:devAddr(devAddr)
+,min_value(min_value)
 ,max_value(max_value)
 {
     offset = {0,0,0};
@@ -10,27 +11,31 @@ Accelerometer::Accelerometer(int16_t min_value, int16_t max_value)
 
 Position Accelerometer::Read()
 {
-    Position pos;
-    pos.x = LSM6DSL::readRawAccelX();
-    pos.y = LSM6DSL::readRawAccelY();
-    pos.z = LSM6DSL::readRawAccelZ();
+    Position pos = {0,0,0};
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTX_L_XL_REG, LSM6DSL_ACCEL_SIGNAL_LENGTH, buffer);
+    pos.x = (((int16_t)buffer[LSM6DSL_ACC_X_HIGH_VALUE])) << BYTE | buffer[LSM6DSL_ACC_X_LOW_VALUE];
+    pos.y = (((int16_t)buffer[LSM6DSL_ACC_Y_HIGH_VALUE])) << BYTE | buffer[LSM6DSL_ACC_Y_LOW_VALUE];
+    pos.z = (((int16_t)buffer[LSM6DSL_ACC_Z_HIGH_VALUE])) << BYTE | buffer[LSM6DSL_ACC_Z_LOW_VALUE];
 
     return pos;
 }
 
 int16_t Accelerometer::GetAccelerationX()
 {
-    return LSM6DSL::readRawAccelX();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTX_L_XL_REG, LSM6DSL_ACC_OUT_LENGTH, buffer);
+    return (int16_t)buffer[0] | (int16_t)buffer[1] << BYTE;
 }
 
 int16_t Accelerometer::GetAccelerationY()
 {
-    return LSM6DSL::readRawAccelY();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTY_L_XL_REG, LSM6DSL_ACC_OUT_LENGTH, buffer);
+    return (int16_t)buffer[0] | (int16_t)buffer[1] << BYTE;
 }
 
 int16_t Accelerometer::GetAccelerationZ()
 {
-    return LSM6DSL::readRawAccelZ();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTZ_L_XL_REG, LSM6DSL_ACC_OUT_LENGTH, buffer);
+    return (int16_t)buffer[0] | (int16_t)buffer[1] << BYTE;
 }
 
 const Position& Accelerometer::GetOffset() const
@@ -52,6 +57,12 @@ int16_t Accelerometer::GetMaxValue() const
 {
     return max_value;
 }
+
+uint8_t Accelerometer::GetDevAddr() const
+{
+    return devAddr;
+}
+
 
 int Accelerometer::GetSensitivity() const
 {

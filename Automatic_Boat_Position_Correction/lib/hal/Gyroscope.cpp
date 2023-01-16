@@ -1,7 +1,8 @@
 #include "../hal/Gyroscope.hpp"
 
-Gyroscope::Gyroscope(int16_t min_value, int16_t max_value)
-: min_value(min_value)
+Gyroscope::Gyroscope(uint8_t devAddr, int16_t min_value, int16_t max_value)
+: devAddr(devAddr)
+, min_value(min_value)
 , max_value(max_value)
 { 
   offset = {0,0,0};
@@ -13,9 +14,10 @@ Gyroscope::Gyroscope(int16_t min_value, int16_t max_value)
 Position Gyroscope::Read()
 {
     Position pos = {0,0,0};
-    pos.x = LSM6DSL::readRawGyroX();
-    pos.y = LSM6DSL::readRawGyroY();
-    pos.z = LSM6DSL::readRawGyroZ();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTX_L_G_REG, LSM6DSL_GYRO_SIGNAL_LENGTH, buffer);
+    pos.x = (((int16_t)buffer[LSM6DSL_GYRO_X_HIGH_VALUE])) << BYTE | buffer[LSM6DSL_GYRO_X_LOW_VALUE];
+    pos.y = (((int16_t)buffer[LSM6DSL_GYRO_Y_HIGH_VALUE])) << BYTE | buffer[LSM6DSL_GYRO_Y_LOW_VALUE];
+    pos.z = (((int16_t)buffer[LSM6DSL_GYRO_Z_HIGH_VALUE])) << BYTE | buffer[LSM6DSL_GYRO_Z_LOW_VALUE];
 
     return pos;
 }
@@ -23,19 +25,22 @@ Position Gyroscope::Read()
 //Returns x-axis value of the gyroscope
 int16_t Gyroscope::GetRotationX()
 {
-    return LSM6DSL::readRawGyroX();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTX_L_G_REG, LSM6DSL_GYRO_OUT_LENGTH, buffer);
+    return (((int16_t)buffer[1]) << BYTE) | buffer[0];
 }
 
 //Returns y-axis value of the gyroscope
 int16_t Gyroscope::GetRotationY()
 {
-    return LSM6DSL::readRawGyroY();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTY_L_G_REG, LSM6DSL_GYRO_OUT_LENGTH, buffer);
+    return (((int16_t)buffer[1]) << BYTE) | buffer[0];
 }
 
 //Returns z-axis of the gyroscope
 int16_t Gyroscope::GetRotationZ()
 {
-    return LSM6DSL::readRawGyroZ();
+    I2Cdev::readBytes(devAddr, LSM6DSL_ACC_GYRO_OUTZ_L_G_REG, LSM6DSL_GYRO_OUT_LENGTH, buffer);
+    return (((int16_t)buffer[1]) << BYTE) | buffer[0];
 }
 
 const Position& Gyroscope::GetOffset() const

@@ -2,12 +2,13 @@
 #define ACCELEROMETER_H_
 
 #include "../interfaces/IAccelerometer.hpp"
-#include "../LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../libraries/I2Cdev.hpp"
 
 class Accelerometer : public IAccelerometer
 {
     public:
-        Accelerometer(int16_t min_value, int16_t max_value);
+        Accelerometer(uint8_t devAddr, int16_t min_value, int16_t max_value);
         ~Accelerometer(){}
 
         Position Read();
@@ -18,11 +19,13 @@ class Accelerometer : public IAccelerometer
         const Position GetPos(const Position& rawData) const;
         int16_t GetMinValue() const;
         int16_t GetMaxValue() const;
+        uint8_t GetDevAddr() const;
         int GetSensitivity() const;
         int SetOffset(int16_t x, int16_t y, int16_t z);
     
     private:
-        uint8_t buffer[14];
+        uint8_t devAddr;
+        uint8_t buffer[16];
         int16_t min_value;
         int16_t max_value;
         Position offset;

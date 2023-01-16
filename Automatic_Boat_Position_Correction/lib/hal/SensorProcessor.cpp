@@ -39,7 +39,8 @@ void SensorProcessor::Calibrate(int nrOfSamples, int accelSens)
 */
 float SensorProcessor::GetLastAccelReadings(int nrOfReadings)
 {
-    //TODO
+    Position pos = accelerometer.Read();
+    return pos.x;
 }
 
 /* 
@@ -49,6 +50,7 @@ float SensorProcessor::GetLastAccelReadings(int nrOfReadings)
 Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
 {
     //TODO
+    return {0,0,0};
 }
 
 /*
@@ -59,4 +61,5 @@ Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
 Position SensorProcessor::GetFilteredRotation()
 {
     //TODO
+    return {0,0,0};
 }
