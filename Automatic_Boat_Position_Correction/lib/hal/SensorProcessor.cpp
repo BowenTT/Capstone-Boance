@@ -17,7 +17,7 @@ SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 */
 void SensorProcessor::Calibrate(int nrOfSamples, int accelSens)
 {
-    //TODO
+    // Perhaps this is not needed, factory calibration might be enough
 }
 
 /*
@@ -48,5 +48,4 @@ Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
 Position SensorProcessor::GetFilteredRotation()
 {
     //TODO
-    return {0,0,0};
 }
