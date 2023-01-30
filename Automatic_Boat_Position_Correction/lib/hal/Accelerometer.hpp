@@ -23,7 +23,7 @@ class Accelerometer : public IAccelerometer
         int16_t GetMinValue() const;
         int16_t GetMaxValue() const;
         uint8_t GetDevAddr() const;
-        int GetSensitivity() const;
+        float GetSensitivity() const;
         int SetOffset(int16_t x, int16_t y, int16_t z);
     
     private:
@@ -33,7 +33,7 @@ class Accelerometer : public IAccelerometer
         int16_t max_value;
         Position offset;
         Position pos;
-        int sensitivity;
+        float sensitivity;
 
 };
 

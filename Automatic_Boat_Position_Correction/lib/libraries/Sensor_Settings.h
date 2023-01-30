@@ -17,4 +17,9 @@
 #define gyroFifoEnabled         1
 #define gyroFifoDecimation      1
 
+//TODO: Later implementation of configurable settings (speed, weight of boat, etc)
+// #define boat_speed ...
+// #define boat_weight ...
+// #define ...?
+
 #endif

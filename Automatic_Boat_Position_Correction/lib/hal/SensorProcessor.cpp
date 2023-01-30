@@ -20,7 +20,7 @@ SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 */
 void SensorProcessor::Calibrate(int nrOfSamples, int accelSens)
 {
-    //TODO
+    // Perhaps this is not needed, factory calibration might be enough
 }
 
 /*

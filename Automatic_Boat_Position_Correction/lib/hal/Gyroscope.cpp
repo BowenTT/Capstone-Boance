@@ -71,12 +71,30 @@ void Gyroscope::Setup()
     //Writes the settings to the register
     I2Cdev::writeByte(LSM6DSL_DEFAULT_ADDRESS,LSM6DSL_ACC_GYRO_CTRL2_G_REG, data);
 
-    //Reads the config register and sets the sensitivity variable
+    //Reads the config register and sets the sensitivity variable (page 61)
     //See LSM6DSL Datasheet for interpretation of sensitivity values
-    //https://www.st.com/resource/en/datasheet/lsm6dsl.pdf
+    //https://www.st.com/resource/en/datasheet/lsm6dsl.pdf 
+    // TODO: Currently there is no support for the 125 DPS setting
     uint8_t buffer[1];
     I2Cdev::readByte(LSM6DSL_DEFAULT_ADDRESS, LSM6DSL_ACC_GYRO_CTRL2_G_REG, buffer);
-    sensitivity = (buffer[0] & 12) >> 2;
+    int reg_sens = (buffer[0] & 12) >> 2;
+
+    switch(reg_sens)
+    {
+        case 0:
+            sensitivity = LSM6DSL_GYRO_SENS_250;
+            break;
+        case 1:
+            sensitivity = LSM6DSL_GYRO_SENS_500;
+            break;
+        case 2:
+            sensitivity = LSM6DSL_GYRO_SENS_1000;
+            break;
+        default:
+        case 3:
+            sensitivity = LSM6DSL_GYRO_SENS_2000;
+            break;
+    }
 }
 
 
@@ -141,7 +159,7 @@ int16_t Gyroscope::GetMaxValue() const
     return max_value;
 }
 
-int Gyroscope::GetSensitivity() const
+float Gyroscope::GetSensitivity() const
 {
     return sensitivity;
 }

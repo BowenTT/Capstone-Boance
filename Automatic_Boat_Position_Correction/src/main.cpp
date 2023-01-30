@@ -2,10 +2,12 @@
 #include <math.h>
 #include <../hal/Accelerometer.hpp>
 #include <../hal/Gyroscope.hpp>
+#include <../hal/SensorProcessor.hpp>
 #include <LSM6DSL-Arduino/src/LSM6DSL.h>
 
 Accelerometer a(LSM6DSL_DEFAULT_ADDRESS, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
 Gyroscope g(LSM6DSL_DEFAULT_ADDRESS, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
+SensorProcessor sp(a,g);
 
 void setup() 
 {
@@ -18,11 +20,11 @@ void setup()
 
   a.Setup();
   Serial.print("ACCEL SENS = ");
-  Serial.println(a.GetSensitivity());
+  Serial.println(a.GetSensitivity(), 6);
 
   g.Setup();
   Serial.print("GYRO SENS = ");
-  Serial.println(g.GetSensitivity());
+  Serial.println(g.GetSensitivity(), 4);
 
   Serial.println("START");
 
@@ -31,13 +33,21 @@ void setup()
 void loop() 
 {
 
-  float RADIANS_TO_DEGREES = 180/M_PI;
+  // Position pos = {0,0,0};
+  // pos = sp.GetFilteredRotation();
+  // Serial.print("X: ");
+  // Serial.println(pos.x);
+  // Serial.print("Y: ");
+  // Serial.println(pos.y);
+  // Serial.print("Z: ");
+  // Serial.println(pos.z);
+  // float RADIANS_TO_DEGREES = 180/M_PI;
 
-  Position accel = a.Read();
-  float roll = atan(-1*accel.x/sqrt(pow(accel.y,2) + pow(accel.z,2))) * RADIANS_TO_DEGREES;
+  // Position accel = a.Read();
+  // float roll = atan(-1*accel.x/sqrt(pow(accel.y,2) + pow(accel.z,2))) * RADIANS_TO_DEGREES;
 
-  Serial.print("roll = ");
-  Serial.println(roll);
+  // Serial.print("roll = ");
+  // Serial.println(roll);
   // Serial.print("X: ");
   // Serial.println(a.GetAccelerationX());
   // Serial.print("Y = ");
