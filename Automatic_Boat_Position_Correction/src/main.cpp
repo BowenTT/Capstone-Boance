@@ -20,11 +20,11 @@ void setup()
 
   a.Setup();
   Serial.print("ACCEL SENS = ");
-  Serial.println(a.GetSensitivity());
+  Serial.println(a.GetSensitivity(), 6);
 
   g.Setup();
   Serial.print("GYRO SENS = ");
-  Serial.println(g.GetSensitivity());
+  Serial.println(g.GetSensitivity(), 4);
 
   Serial.println("START");
 

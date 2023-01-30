@@ -48,4 +48,5 @@ Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
 Position SensorProcessor::GetFilteredRotation()
 {
     //TODO
+    return {0,0,0};
 }

@@ -81,7 +81,24 @@ void Accelerometer::Setup()
     //https://www.st.com/resource/en/datasheet/lsm6dsl.pdf
     uint8_t buffer[1];
     I2Cdev::readByte(LSM6DSL_DEFAULT_ADDRESS, LSM6DSL_ACC_GYRO_CTRL1_XL_REG, buffer);
-    sensitivity = (buffer[0] & 12) >> 2;
+    int reg_sens = (buffer[0] & 12) >> 2;
+
+    switch(reg_sens)
+    {
+        case 0:
+            sensitivity = LSM6DSL_ACCEL_SENS_2G;
+            break;
+        default:
+        case 1:
+            sensitivity = LSM6DSL_ACCEL_SENS_16G;
+            break;
+        case 2:
+            sensitivity = LSM6DSL_ACCEL_SENS_4G;
+            break;
+        case 3:
+            sensitivity = LSM6DSL_ACCEL_SENS_8G;
+            break;
+    }
 }
 
 
@@ -152,7 +169,7 @@ uint8_t Accelerometer::GetDevAddr() const
 }
 
 
-int Accelerometer::GetSensitivity() const
+float Accelerometer::GetSensitivity() const
 {
     return sensitivity;
 }

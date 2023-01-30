@@ -32,6 +32,8 @@
 #define LSM6DSL_ACC_GYRO_OUTZ_H_G_REG			0x27
 
 //Capstone changes
+//Currently no support for LSM6DSL_GYRO_SENS_125 sensitivity
+
 #define LSM6DSL_ACC_OUT_LENGTH                  2
 #define LSM6DSL_GYRO_OUT_LENGTH                 2
 #define LSM6DSL_ACCEL_SIGNAL_LENGTH             6
@@ -51,6 +53,14 @@
 #define BYTE                                    8
 #define SIXTEEN_BIT                             32767
 #define LSM6DSL_DEFAULT_ADDRESS                 0x6B
+#define LSM6DSL_GYRO_SENS_250                   0.00875 // dps/lsb
+#define LSM6DSL_GYRO_SENS_500                   0.0175
+#define LSM6DSL_GYRO_SENS_1000                  0.035
+#define LSM6DSL_GYRO_SENS_2000                  0.07
+#define LSM6DSL_ACCEL_SENS_2G                   0.000061 // g/lsb
+#define LSM6DSL_ACCEL_SENS_4G                   0.000122
+#define LSM6DSL_ACCEL_SENS_8G                   0.000244
+#define LSM6DSL_ACCEL_SENS_16G                  0.000488
 
 #define LSM6DSL_ACC_GYRO_TAP_CFG                0x58
 #define LSM6DSL_ACC_GYRO_WAKE_UP_SRC            0x1B

@@ -1,8 +1,8 @@
-#ifndef TIME_H_
-#define TIME_H_
+#ifndef MY_TIME_H_
+#define MY_TIME_H_
 #include <stdint.h>
 
-struct time
+struct my_time
 {
     int sec;
     int ms;
