@@ -30,7 +30,7 @@ public:
 
 private:
     uint8_t devAddr;
-    uint8_t buffer[14];
+    uint8_t buffer[6];
     int min_value;
     int max_value;
     Position offset;

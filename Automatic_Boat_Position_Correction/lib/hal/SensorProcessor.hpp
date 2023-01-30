@@ -11,7 +11,7 @@ class SensorProcessor
         SensorProcessor(IAccelerometer& accel, IGyroscope& gyro);
         ~SensorProcessor(){}
 
-        void Calibrate(int nrOfSamples, int accelSens);
+        void Calibrate(int nrOfSamples);
 
         Position GetFilteredRotation();
         

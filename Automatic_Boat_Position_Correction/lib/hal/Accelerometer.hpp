@@ -28,7 +28,7 @@ class Accelerometer : public IAccelerometer
     
     private:
         uint8_t devAddr;
-        uint8_t buffer[16];
+        uint8_t buffer[6];
         int16_t min_value;
         int16_t max_value;
         Position offset;
