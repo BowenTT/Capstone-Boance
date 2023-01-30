@@ -13,10 +13,12 @@ class SensorProcessor
 
         void Calibrate(int nrOfSamples, int accelSens);
 
-        Position GetFilteredRotation();
+        Position GetFilteredRotation(Position gyro, Position acc);
         
         float GetLastAccelReadings(int nrOfReadings);
         Position GetLastRotationReadings(int nrOfReadings);
+        Position GetAnglesFromAcc(float deltaTime);
+        Position GetAnglesFromGyro(float deltaTime);
 
     private:
 

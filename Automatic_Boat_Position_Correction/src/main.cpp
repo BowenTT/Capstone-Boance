@@ -8,7 +8,7 @@
 Accelerometer a(LSM6DSL_DEFAULT_ADDRESS, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
 Gyroscope g(LSM6DSL_DEFAULT_ADDRESS, int16_t(-SIXTEEN_BIT), int16_t(SIXTEEN_BIT));
 SensorProcessor sp(a,g);
-
+float DT = 0;
 void setup() 
 {
   Wire.begin();
@@ -25,15 +25,49 @@ void setup()
   g.Setup();
   Serial.print("GYRO SENS = ");
   Serial.println(g.GetSensitivity(), 4);
-
+  
   Serial.println("START");
-
+  
 }
 
 void loop() 
-{
+{ 
+  
+   unsigned long start = millis();
+  float RADIANS_TO_DEGREES = 180/M_PI;
 
-  // Position pos = {0,0,0};
+  Position accel = a.Read();
+  float roll = atan(-1*accel.x/sqrt(pow(accel.y,2) + pow(accel.z,2))) * RADIANS_TO_DEGREES;
+
+  Serial.print("roll = ");
+  Serial.println(roll);
+ 
+ /*
+    int16_t raw = a.GetAccelerationX();
+    Serial.println(raw);
+   */
+   /*Position gyro =  sp.GetAnglesFromGyro(DT);
+   
+   Position acc = sp.GetAnglesFromAcc(DT);
+   Position combined = sp.GetFilteredRotation(gyro, acc);
+   Serial.print("Gyro angle X is: ");
+   Serial.println(gyro.x);
+
+
+    Serial.print("Acc angle X is: ");
+   Serial.println(acc.x);
+
+   
+
+   unsigned long end = millis();
+   DT = (end - start) * 0.001;
+  Serial.println(DT);
+  */
+  delay(1000);
+}
+
+
+ // Position pos = {0,0,0};
   // pos = sp.GetFilteredRotation();
   // Serial.print("X: ");
   // Serial.println(pos.x);
@@ -62,5 +96,3 @@ void loop()
   // Serial.println(g.GetRotationY());
   // Serial.print("Z = ");
   // Serial.println(g.GetRotationZ());
-  delay(1000);
-}

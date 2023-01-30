@@ -52,35 +52,47 @@ Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
 Position SensorProcessor::GetAnglesFromGyro(float deltaTime)
 {
     float DT = deltaTime;
-    Position pos;
-    Position angles;
-    float[] rate;
-    float angleX, angleY, angleX;
-    pos = gyroscope.Read();
-    rate[0] = pos.x * gyroscope.GetSensitivity();
-    rate[1] = pos.y * gyroscope.GetSensitivity();
-    rate[2] = pos.z * gyroscope.GetSensitivity();
-    angleX =+ rate[0] * DT;
-    angleY =+ rate[1] * DT;
-    angleZ =+ rate[2] * DT;
+    Position pos = {0,0,0};
+    Position angles = {0,0,0};
 
-    angles = {angleX, angleY, angleX}
+    float angleX = 0;
+    float angleY = 0;
+    float angleZ = 0;
+    float rateX = 0;
+    float rateY = 0;
+    float rateZ = 0;
+    
+
+    pos = gyroscope.Read();
+    rateX = pos.x * gyroscope.GetSensitivity();
+    rateY = pos.y * gyroscope.GetSensitivity();
+    rateZ = pos.z * gyroscope.GetSensitivity();
+    angleX += rateX * DT;
+    angleY += rateY * DT;
+    angleZ += rateZ * DT;
+
+    angles = {angleX, angleY, angleZ};
     return angles;
 }
 Position SensorProcessor::GetAnglesFromAcc(float deltaTime)
 {
     
     Position pos = accelerometer.Read();
-    angleX = (float) (atan2(pos.y,pos.z)+PI)*RAD_TO_DEG;
-    angleY = (float) (atan2(pos.z,pos.x)+PI)*RAD_TO_DEG;
-    return {angleX,angleY,0}
+    float angleX = (float) (atan2(pos.y,pos.z)+PI)*RAD_TO_DEG;
+    float angleY = (float) (atan2(pos.z,pos.x)+PI)*RAD_TO_DEG;
+    return {angleX,angleY,0};
 }
 
 Position SensorProcessor::GetFilteredRotation(Position anglesGyro, Position anglesAcc)
 {
-    
+   //Complementary filter
+   //Current angle = 98% x (current angle + gyro rotation rate) + (2% * Accelerometer angle)
+    float angleX = 0;
+    float angleY = 0;
+    angleX = 0.98 * (anglesGyro.x) + (0.02 * anglesAcc.x);
+    angleY = 0.98 * (anglesGyro.y) + (0.02 * anglesAcc.y);
 
 
 
-    return {0,0,0};
+    return {angleX,angleY,0};
 }
