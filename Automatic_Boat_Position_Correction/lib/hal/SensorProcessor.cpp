@@ -1,4 +1,7 @@
 #include "../hal/SensorProcessor.hpp"
+#include <math.h>
+#define RAD_TO_DEG 57.29578
+#define PI 3.14159265358979323846
 
 SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 :accelerometer(accel)
@@ -45,8 +48,39 @@ Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
     then it integrates the gyroscope data over time to get angular rotation from the gyryscope
     at last, a complementary filter is used to combined both datastreams for a more accurate representation
 */
-Position SensorProcessor::GetFilteredRotation()
+
+Position SensorProcessor::GetAnglesFromGyro(float deltaTime)
 {
-    //TODO
+    float DT = deltaTime;
+    Position pos;
+    Position angles;
+    float[] rate;
+    float angleX, angleY, angleX;
+    pos = gyroscope.Read();
+    rate[0] = pos.x * gyroscope.GetSensitivity();
+    rate[1] = pos.y * gyroscope.GetSensitivity();
+    rate[2] = pos.z * gyroscope.GetSensitivity();
+    angleX =+ rate[0] * DT;
+    angleY =+ rate[1] * DT;
+    angleZ =+ rate[2] * DT;
+
+    angles = {angleX, angleY, angleX}
+    return angles;
+}
+Position SensorProcessor::GetAnglesFromAcc(float deltaTime)
+{
+    
+    Position pos = accelerometer.Read();
+    angleX = (float) (atan2(pos.y,pos.z)+PI)*RAD_TO_DEG;
+    angleY = (float) (atan2(pos.z,pos.x)+PI)*RAD_TO_DEG;
+    return {angleX,angleY,0}
+}
+
+Position SensorProcessor::GetFilteredRotation(Position anglesGyro, Position anglesAcc)
+{
+    
+
+
+
     return {0,0,0};
 }
