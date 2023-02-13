@@ -96,10 +96,12 @@ Position SensorProcessor::GetFilteredRotation()
                                 rotation.y * elapsedTime + lastRotation.y,
                                 rotation.z * elapsedTime + lastRotation.z};
 
+
     float alpha = 0.98;
     Position filteredRotation = {alpha * integratedGyro.x + (1 - alpha) * pitch
                                 ,alpha * integratedGyro.y + (1 - alpha) * roll
                                 ,integratedGyro.z};
+
     
     previousTime = currentTime;
     lastRotation = filteredRotation;

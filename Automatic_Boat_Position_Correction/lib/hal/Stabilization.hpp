@@ -1,17 +1,21 @@
 #ifndef STABILIZATION_H_
 #define STABILIZATION_H_
 
-#include "../my_time.hpp"
 #include "SensorProcessor.hpp"
 #include "../Position.hpp"
+#include <PWMServo.h>
+#include <Sensor_Settings.h>
 
 class Stabilization
 {
     public:
-        my_time CalculateTimeOfAct(const Position& rotation, int speed);
-        int ActuateTrimTab(my_time timeOfAct);
-        Position CalculateDeltaRotation(const Position& previousPos, const Position& currentPos, const my_time& previousTime);
-        
+        static double CalculateTimeOfAct(const Position& rotation, int speed);
+        static double ActuateTrimTab(PWMServo& trimtab, double timeOfAct);
+        static Position CalculateDeltaRotation(const Position& previousPos, const Position& currentPos);
+    
+    private:
+        unsigned long current_time = 0;
+        unsigned long previous_time = 0;
 
 };
 
