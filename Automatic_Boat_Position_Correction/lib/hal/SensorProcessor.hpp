@@ -5,6 +5,7 @@
 #include "../interfaces/IGyroscope.hpp"
 #include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
 
+
 class SensorProcessor
 {
     public:
@@ -15,8 +16,8 @@ class SensorProcessor
 
         Position GetFilteredRotation();
         
-        float GetLastAccelReadings(int nrOfReadings);
-        Position GetLastRotationReadings(int nrOfReadings);
+        Position GetLastAccelReadings(unsigned long ms);
+        Position GetLastRotationReadings(unsigned long ms);
 
     private:
 

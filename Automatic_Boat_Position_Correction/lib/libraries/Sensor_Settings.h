@@ -23,7 +23,7 @@
 // #define ...?
 
 #define TRIMTAB_MAX_ANGLE       45
-#define ROLL_THRESHOLD          5 // Degrees threshold which the roll angle needs to exceed before actuation of trim tabs
+#define ROLL_THRESHOLD          15 // Degrees threshold which the roll angle needs to exceed before actuation of trim tabs
 #define DEFAULT_ACTUATION_TIME  500 // ms
 #define DEFAULT_ACTUATION_ANGLE 5 // degrees
 #define ROLL_CHANGE_THRESHOLD   5 // Degrees the boat should change after each actuation to assume the boat will balance itself out again
