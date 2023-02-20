@@ -28,4 +28,6 @@ Boating can be a lot of fun, but it also requires skill and experience to naviga
 This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/). 
 
 ##
+![Team Boance Poster](https://github.com/BowenTT/Capstone-Boance/blob/main/Poster.jpg?raw=true])
 
+<!--<img src="https://github.com/BowenTT/Capstone-Boance/blob/main/Poster.jpg?raw=true" align="center" height="75%" width="75%" alt="Team Boance">-->
