@@ -40,8 +40,8 @@ void setup()
   Serial.println(gyroscope.GetSensitivity(), 4);
   sensorProcessor.Calibrate(250);
 
-  //leftTrimtab.attach(9);
-  //rightTrimtab.attach(10);
+  leftTrimTab.attach(9);
+  rightTrimTab.attach(10);
 
   Serial.println("DONE......... STARTING NOW");
 
@@ -58,14 +58,16 @@ void loop()
 
   while(BalancedState)
   {
-    //DEBUG LINE, REMOVE ON PRODUCTION
-    Serial.println("In Balanced State");
 
     tiltedLeft = false;
     tiltedRight = false;
 
     //Get the average rotation of the past [ms] milliseconds
     current_position = sensorProcessor.GetLastRotationReadings(100);
+
+    //DEBUG LINE, REMOVE ON PRODUCTION
+    Serial.print("In Balanced State, roll = ");
+    Serial.println(current_position.y);
 
     //Check if the boat is tilted enough, if so, move to BalancingState.
     if(abs(current_position.y) >= ROLL_THRESHOLD)
@@ -91,23 +93,29 @@ void loop()
 
   while(BalancingState)
   {
-    //DEBUG LINE, REMOVE ON PRODUCTION
-    Serial.println("In Balancing State");
-
 
     previous_position = current_position;
     current_position = sensorProcessor.GetLastRotationReadings(100);
+
+    //DEBUG LINE, REMOVE ON PRODUCTION
+    Serial.print("In Balancing State, roll = ");
+    Serial.println(current_position.y);
+
     Position positionDelta = {0,0,0};
     PWMServo activeTrimTab;
     //Calculation of the delta rotation is reversed for the left and right trimtabs because of the negative & positive changes respectively
     //Therefore, the CalculateDeltaRotation has to be reversed for each trim tab the check to make sense
     if(tiltedLeft)
     {
+      Serial.println("Tilted left");
+      rightTrimTab.write(0);
       positionDelta = Stabilization::CalculateDeltaRotation(current_position, previous_position);
       activeTrimTab = leftTrimTab;
     }
     else if(tiltedRight)
     {
+      Serial.println("Tilted right");
+      leftTrimTab.write(0);
       positionDelta = Stabilization::CalculateDeltaRotation(previous_position, current_position);
       activeTrimTab = rightTrimTab;
     }
@@ -130,12 +138,16 @@ void loop()
 
   while(PassiveState)
   {
-    //DEBUG LINE, REMOVE ON PRODUCTION
-    Serial.println("In Passive Correction State");
+
 
 
     previous_position = current_position;
     current_position = sensorProcessor.GetLastRotationReadings(100);
+
+    //DEBUG LINE, REMOVE ON PRODUCTION
+    Serial.print("In Passive Correction State, roll = ");
+    Serial.println(current_position.y);
+
     Position positionDelta = {0,0,0};
 
     if(tiltedLeft)
@@ -164,36 +176,4 @@ void loop()
       break;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // trimtab.write(0);
-  // delay(2000);
-
-  // Position curr_pos = {0,45,0};
-  // double timeOfAct = Stabilization::CalculateTimeOfAct(curr_pos, 0);
-  // Serial.print("timeOfAct = ");
-  // Serial.println(timeOfAct);
-  // double res = Stabilization::ActuateTrimTab(trimtab, timeOfAct);
-  // Serial.print("res = ");
-  // Serial.println(res);
-  // // Position prev_pos = {0,-45,0};
-  // // Position res = Stabilization::CalculateDeltaRotation(prev_pos, curr_pos);
-  // // if(-res.y >= ROLL_CHANGE_THRESHOLD)
-  // // {
-  // //   Serial.println("Wow, good job; You're going to be balanced soon");
-  // // }
-  // delay(5000);
 }

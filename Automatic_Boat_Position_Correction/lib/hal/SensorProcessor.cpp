@@ -43,8 +43,8 @@ void SensorProcessor::Calibrate(int nrOfSamples)
 }
 
 /*
-    Returns the average of 'nrOfReadings' accelerometer readings
-    Average is multiplied by ten for easier comparisons and visibility with plotting
+    Returns the average accelerometer readings over [ms] amounts of time
+    Return value = {x, y, z}
 */
 Position SensorProcessor::GetLastAccelReadings(unsigned long ms)
 {
@@ -66,7 +66,7 @@ Position SensorProcessor::GetLastAccelReadings(unsigned long ms)
 }
 
 /* 
-    Returns the average of gyroscope readings over [ms] amount of time
+    Returns the average gyroscope readings over [ms] amounts of time
     Return value = {x, y, z}
 */
 Position SensorProcessor::GetLastRotationReadings(unsigned long ms)
