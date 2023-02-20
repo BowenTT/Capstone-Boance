@@ -9,7 +9,7 @@ This project aims to develop a system that automatically corrects the position o
 * [Features](#Features)
 * [Installation](#Installation)
 * [Usage](#Usage)
-* [License](#Licence)
+* [License](#Licene)
 
 ## Introduction
 Boating can be a lot of fun, but it also requires skill and experience to navigate safely. One of the biggest challenges for baoters is staying on course, especially when wind and waves are strong. This projects aims to solve that problem by developing a system that uses sensors to automatically correct the boat's position and keep it on course.
@@ -22,6 +22,7 @@ Boating can be a lot of fun, but it also requires skill and experience to naviga
 
 ## Installation
 
+## Usage
 
 ## License
 This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/). 
