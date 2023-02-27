@@ -24,7 +24,7 @@ double Stabilization::ActuateTrimTab(PWMServo& trimtab, double timeOfAct)
     return angle;
 }
 
-Position Stabilization::CalculateDeltaRotation(const Position& previousPos, const Position& currentPos)
+Position Stabilization::CalculateDeltaRotation(const Position& a, const Position& b)
 {
-    return previousPos - currentPos;
+    return a - b;
 }

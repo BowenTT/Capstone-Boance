@@ -43,36 +43,47 @@ void SensorProcessor::Calibrate(int nrOfSamples)
 }
 
 /*
-    Returns the average of 'nrOfReadings' accelerometer readings
-    Average is multiplied by ten for easier comparisons and visibility with plotting
+    Returns the average accelerometer readings over [ms] amounts of time
+    Return value = {x, y, z}
 */
-float SensorProcessor::GetLastAccelReadings(int nrOfReadings)
+Position SensorProcessor::GetLastAccelReadings(unsigned long ms)
 {
-    float average = 0;
-    for(int i = 0; i < nrOfReadings; i++)
+    Position average = {0,0,0};
+    int cnt = 0;
+    unsigned long start_time = millis();
+    unsigned long end_time = start_time;
+
+    while((end_time - start_time) <= ms)
     {
-        Position accelGValues = convertWithFactor(accelerometer.GetPos(accelerometer.Read()), accelerometer.GetSensitivity());
-        float AccelVector = pow(pow(accelGValues.x,2) + pow(accelGValues.y,2) + pow(accelGValues.z,2), 0.5);
-        AccelVector *= 10;
-        average += AccelVector;
+        Position accelValues = convertWithFactor(accelerometer.GetPos(accelerometer.Read()), accelerometer.GetSensitivity());
+        average = average + accelValues;
+        cnt++;
+        end_time = millis();
     }
-    average /= nrOfReadings;
+
+    average = average / cnt;
     return average;
 }
 
 /* 
-    Returns the average of 'nrOfReadings' gyroscope readings
+    Returns the average gyroscope readings over [ms] amounts of time
     Return value = {x, y, z}
 */
-Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
+Position SensorProcessor::GetLastRotationReadings(unsigned long ms)
 {
     Position average = {0,0,0};
-    for(int i = 0; i < nrOfReadings; i++)
+    int cnt = 0;
+    unsigned long start_time = millis();
+    unsigned long end_time = start_time;
+
+    while((end_time - start_time) <= ms)
     {
-        Position rotation = GetFilteredRotation();
-        average = average + rotation;
+        average = average + GetFilteredRotation();
+        cnt++;
+        end_time = millis();
     }
-    average = average / nrOfReadings;
+
+    average = average / cnt;
     return average;
 }
 
@@ -80,12 +91,14 @@ Position SensorProcessor::GetLastRotationReadings(int nrOfReadings)
     Gets the angular rotation of the sensor by first getting the roll and pitch from the accelerometer
     then it integrates the gyroscope data over time to get angular rotation from the gyryscope
     at last, a complementary filter is used to combined both datastreams for a more accurate representation
+
+    TODO:: Implement Kalman Filter here
 */
 Position SensorProcessor::GetFilteredRotation()
 {
     currentTime = millis();
     float RADIANS_TO_DEGREES = 180/M_PI;
-    Position accel = accelerometer.GetPos(accelerometer.Read());
+    Position accel = accelerometer.Read();
     //Get roll and pitch from accelerometer
     float roll = atan(-1*accel.x/sqrt(pow(accel.y,2) + pow(accel.z,2))) * RADIANS_TO_DEGREES;
     float pitch = atan(accel.y/sqrt(pow(accel.x,2) + pow(accel.z,2))) * RADIANS_TO_DEGREES;
