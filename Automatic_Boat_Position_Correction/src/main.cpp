@@ -21,6 +21,7 @@ bool PassiveState = false;
 bool tiltedLeft = false;
 bool tiltedRight = false;
 
+bool test = false;
 
 void setup() 
 {
@@ -50,130 +51,136 @@ void setup()
 
 void loop() 
 {
-  //TEST, REMOVE ON PRODUCTION
-  // current_position = sensorProcessor.GetLastRotationReadings(250);
-  // Serial.println(current_position.y);
-  // delay(100);
-
-
-  while(BalancedState)
+  if(test)
   {
-
-    tiltedLeft = false;
-    tiltedRight = false;
-
-    //Get the average rotation of the past [ms] milliseconds
-    current_position = sensorProcessor.GetLastRotationReadings(100);
-
-    //DEBUG LINE, REMOVE ON PRODUCTION
-    Serial.print("In Balanced State, roll = ");
+    //TEST, REMOVE ON PRODUCTION
+    current_position = sensorProcessor.GetLastRotationReadings(250);
     Serial.println(current_position.y);
-
-    //Check if the boat is tilted enough, if so, move to BalancingState.
-    if(abs(current_position.y) >= ROLL_THRESHOLD)
-    {
-      //Check if tilted left or right, negative = left, positive = right
-      if(current_position.y <= ROLL_THRESHOLD)
-      {
-        tiltedLeft = true;
-      }
-
-      else if(current_position.y >= ROLL_THRESHOLD)
-      {
-        tiltedRight = true;
-      }
-
-      BalancedState = false;
-      PassiveState = false;
-      BalancingState = true;
-      break;
-    }
+    delay(100);
   }
-  
 
-  while(BalancingState)
+  else
   {
 
-    previous_position = current_position;
-    current_position = sensorProcessor.GetLastRotationReadings(100);
-
-    //DEBUG LINE, REMOVE ON PRODUCTION
-    Serial.print("In Balancing State, roll = ");
-    Serial.println(current_position.y);
-
-    Position positionDelta = {0,0,0};
-    PWMServo activeTrimTab;
-    //Calculation of the delta rotation is reversed for the left and right trimtabs because of the negative & positive changes respectively
-    //Therefore, the CalculateDeltaRotation has to be reversed for each trim tab the check to make sense
-    if(tiltedLeft)
+    while(BalancedState)
     {
-      Serial.println("Tilted left");
-      rightTrimTab.write(0);
-      positionDelta = Stabilization::CalculateDeltaRotation(current_position, previous_position);
-      activeTrimTab = leftTrimTab;
-    }
-    else if(tiltedRight)
-    {
-      Serial.println("Tilted right");
-      leftTrimTab.write(0);
-      positionDelta = Stabilization::CalculateDeltaRotation(previous_position, current_position);
-      activeTrimTab = rightTrimTab;
-    }
 
-    //Check if the last actuation time has a positive enough impact
-    if(positionDelta.y >= ROLL_CHANGE_THRESHOLD)
+      tiltedLeft = false;
+      tiltedRight = false;
+
+      //Get the average rotation of the past [ms] milliseconds
+      current_position = sensorProcessor.GetLastRotationReadings(100);
+
+      //DEBUG LINE, REMOVE ON PRODUCTION
+      Serial.print("In Balanced State, roll = ");
+      Serial.println(current_position.y);
+
+      //Check if the boat is tilted enough, if so, move to BalancingState.
+      if(abs(current_position.y) >= ROLL_THRESHOLD)
       {
-        // Positive enough, go to Passive Posture Correction State
-        BalancingState = false;
-        PassiveState = true;
+        //Check if tilted left or right, negative = left, positive = right
+        if(current_position.y <= ROLL_THRESHOLD)
+        {
+          tiltedLeft = true;
+        }
+
+        else if(current_position.y >= ROLL_THRESHOLD)
+        {
+          tiltedRight = true;
+        }
+
+        BalancedState = false;
+        PassiveState = false;
+        BalancingState = true;
         break;
       }
-      else
+    }
+    
+
+    while(BalancingState)
+    {
+
+      previous_position = current_position;
+      current_position = sensorProcessor.GetLastRotationReadings(100);
+
+      //DEBUG LINE, REMOVE ON PRODUCTION
+      Serial.print("In Balancing State, roll = ");
+      Serial.println(current_position.y);
+
+      Position positionDelta = {0,0,0};
+      PWMServo activeTrimTab;
+      //Calculation of the delta rotation is reversed for the left and right trimtabs because of the negative & positive changes respectively
+      //Therefore, the CalculateDeltaRotation has to be reversed for each trim tab the check to make sense
+      if(tiltedLeft)
       {
-        //Calculate the actuation time based on the angle and actuate the correct trimtab
-        double timeOfAct = Stabilization::CalculateTimeOfAct(current_position, 0);
-        Stabilization::ActuateTrimTab(activeTrimTab, timeOfAct);
+        Serial.println("Tilted left");
+        rightTrimTab.write(0);
+        positionDelta = Stabilization::CalculateDeltaRotation(current_position, previous_position);
+        activeTrimTab = leftTrimTab;
       }
-    }
+      else if(tiltedRight)
+      {
+        Serial.println("Tilted right");
+        leftTrimTab.write(0);
+        positionDelta = Stabilization::CalculateDeltaRotation(previous_position, current_position);
+        activeTrimTab = rightTrimTab;
+      }
 
-  while(PassiveState)
-  {
+      //Check if the last actuation time has a positive enough impact
+      if(positionDelta.y >= ROLL_CHANGE_THRESHOLD)
+        {
+          // Positive enough, go to Passive Posture Correction State
+          BalancingState = false;
+          PassiveState = true;
+          break;
+        }
+        else
+        {
+          //Calculate the actuation time based on the angle and actuate the correct trimtab
+          double timeOfAct = Stabilization::CalculateTimeOfAct(current_position, 0);
+          Stabilization::ActuateTrimTab(activeTrimTab, timeOfAct);
+        }
+      }
 
-
-
-    previous_position = current_position;
-    current_position = sensorProcessor.GetLastRotationReadings(100);
-
-    //DEBUG LINE, REMOVE ON PRODUCTION
-    Serial.print("In Passive Correction State, roll = ");
-    Serial.println(current_position.y);
-
-    Position positionDelta = {0,0,0};
-
-    if(tiltedLeft)
+    while(PassiveState)
     {
-      positionDelta = Stabilization::CalculateDeltaRotation(current_position, previous_position);
-    }
-    else if(tiltedRight)
-    {
-      positionDelta = Stabilization::CalculateDeltaRotation(previous_position, current_position);
-    }
 
-    //Negative change (rolling the wrong way)
-    if(positionDelta.y <= ROLL_CHANGE_THRESHOLD)
-    {
-      PassiveState = false;
-      BalancingState = true;
-      break;
-    }
 
-    //Check if boat is balanced (where -ROLL_THRESHOLD <= current.y <= ROLL_THRESHOLD)
-    //If so, go to balanced state
-    if(current_position.y >= -ROLL_THRESHOLD && current_position.y <= ROLL_THRESHOLD)
-    {
-      PassiveState = false;
-      BalancedState = true;
-      break;
+
+      previous_position = current_position;
+      current_position = sensorProcessor.GetLastRotationReadings(100);
+
+      //DEBUG LINE, REMOVE ON PRODUCTION
+      Serial.print("In Passive Correction State, roll = ");
+      Serial.println(current_position.y);
+
+      Position positionDelta = {0,0,0};
+
+      if(tiltedLeft)
+      {
+        positionDelta = Stabilization::CalculateDeltaRotation(current_position, previous_position);
+      }
+      else if(tiltedRight)
+      {
+        positionDelta = Stabilization::CalculateDeltaRotation(previous_position, current_position);
+      }
+
+      //Negative change (rolling the wrong way)
+      if(positionDelta.y <= ROLL_CHANGE_THRESHOLD)
+      {
+        PassiveState = false;
+        BalancingState = true;
+        break;
+      }
+
+      //Check if boat is balanced (where -ROLL_THRESHOLD <= current.y <= ROLL_THRESHOLD)
+      //If so, go to balanced state
+      if(current_position.y >= -ROLL_THRESHOLD && current_position.y <= ROLL_THRESHOLD)
+      {
+        PassiveState = false;
+        BalancedState = true;
+        break;
+      }
     }
   }
 }
