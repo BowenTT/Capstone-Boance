@@ -4,6 +4,7 @@
 #include "../interfaces/IAccelerometer.hpp"
 #include "../interfaces/IGyroscope.hpp"
 #include "../libraries/LSM6DSL-Arduino/src/LSM6DSL.h"
+#include "../libraries/KalmanFilter.h"
 
 
 class SensorProcessor
@@ -23,6 +24,9 @@ class SensorProcessor
 
         IAccelerometer& accelerometer;
         IGyroscope& gyroscope;
+
+        KalmanFilter kalmanX;
+        KalmanFilter kalmanY;
 
         Position lastRotation;
         unsigned long currentTime;

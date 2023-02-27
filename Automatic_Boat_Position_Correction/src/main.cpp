@@ -21,7 +21,7 @@ bool PassiveState = false;
 bool tiltedLeft = false;
 bool tiltedRight = false;
 
-bool test = false;
+bool test = true;
 
 void setup() 
 {
