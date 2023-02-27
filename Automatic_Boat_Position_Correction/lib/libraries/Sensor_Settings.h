@@ -22,6 +22,9 @@
 // #define boat_weight ...
 // #define ...?
 
+#define MIN_BOAT_SPEED          10 // knots
+#define BOAT_SPEED              9 // knots 
+
 #define TRIMTAB_MAX_ANGLE       45
 #define ROLL_THRESHOLD          15 // Degrees threshold which the roll angle needs to exceed before actuation of trim tabs
 #define DEFAULT_ACTUATION_TIME  500 // ms
@@ -29,4 +32,10 @@
 #define ROLL_CHANGE_THRESHOLD   2 // Degrees the boat should change after each actuation to assume the boat will balance itself out again
 #define FUZZY_LOGIC_RESOLUTION  10
 #define MAX_ACTUATION_TIME      5000 // ms
+
+//KALMAN FILTER
+#define KALMAN_START_ANGLE      0.001
+#define KALMAN_BIAS             0.003
+#define KALMAN_MEASURE          0.03
+
 #endif

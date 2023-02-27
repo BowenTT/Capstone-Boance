@@ -17,8 +17,8 @@ SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 ,previousTime(0)
 ,elapsedTime(0)
 {
-    kalmanX = KalmanFilter(0.001, 0.003, 0.03);
-    kalmanY = KalmanFilter(0.001, 0.003, 0.03);
+    kalmanX = KalmanFilter(KALMAN_START_ANGLE, KALMAN_BIAS, KALMAN_MEASURE);
+    kalmanY = KalmanFilter(KALMAN_START_ANGLE, KALMAN_BIAS, KALMAN_MEASURE);
 }
 
 /*

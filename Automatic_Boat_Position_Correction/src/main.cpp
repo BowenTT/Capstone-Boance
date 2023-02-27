@@ -21,7 +21,7 @@ bool PassiveState = false;
 bool tiltedLeft = false;
 bool tiltedRight = false;
 
-bool test = true;
+bool test = false;
 
 void setup() 
 {
@@ -59,7 +59,7 @@ void loop()
     delay(100);
   }
 
-  else
+  else if(BOAT_SPEED >= MIN_BOAT_SPEED)
   {
 
     while(BalancedState)
@@ -101,6 +101,7 @@ void loop()
     {
 
       previous_position = current_position;
+      //Get the average rotation of the past [ms] milliseconds
       current_position = sensorProcessor.GetLastRotationReadings(100);
 
       //DEBUG LINE, REMOVE ON PRODUCTION
@@ -182,5 +183,14 @@ void loop()
         break;
       }
     }
+  }
+  else
+  {
+    Serial.println("Boat is not going fast enough... ");
+    Serial.print("Minimum speed required = ");
+    Serial.println(MIN_BOAT_SPEED);
+    Serial.print("Current boat speed = ");
+    Serial.println(BOAT_SPEED);
+    delay(1000);
   }
 }
