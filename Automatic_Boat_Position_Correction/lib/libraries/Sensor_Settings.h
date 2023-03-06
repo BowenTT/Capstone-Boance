@@ -23,7 +23,7 @@
 // #define ...?
 
 #define MIN_BOAT_SPEED          10 // knots
-#define BOAT_SPEED              9 // knots 
+#define BOAT_SPEED              12 // knots 
 
 #define TRIMTAB_MAX_ANGLE       45
 #define ROLL_THRESHOLD          15 // Degrees threshold which the roll angle needs to exceed before actuation of trim tabs

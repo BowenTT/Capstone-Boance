@@ -10,7 +10,7 @@ class Stabilization
 {
     public:
         static double CalculateTimeOfAct(const Position& rotation, int speed);
-        static double ActuateTrimTab(PWMServo& trimtab, double timeOfAct);
+        static double ActuateTrimTab(PWMServo& trimtab, double timeOfAct, bool isLeft);
         static Position CalculateDeltaRotation(const Position& previousPos, const Position& currentPos);
     
     private:

@@ -54,9 +54,17 @@ void loop()
   if(test)
   {
     //TEST, REMOVE ON PRODUCTION
-    current_position = sensorProcessor.GetLastRotationReadings(250);
-    Serial.println(current_position.y);
-    delay(100);
+    // current_position = sensorProcessor.GetLastRotationReadings(250);
+    // Serial.println(current_position.y);
+    // delay(100);
+    leftTrimTab.write(0);
+    delay(1000);
+    leftTrimTab.write(45);
+    delay(3000);
+    // leftTrimTab.write(90);
+    // delay(1000);
+    // leftTrimTab.write(180);
+    // delay(1000);
   }
 
   else if(BOAT_SPEED >= MIN_BOAT_SPEED)
@@ -122,7 +130,7 @@ void loop()
       else if(tiltedRight)
       {
         Serial.println("Tilted right");
-        leftTrimTab.write(0);
+        leftTrimTab.write(45);
         positionDelta = Stabilization::CalculateDeltaRotation(previous_position, current_position);
         activeTrimTab = rightTrimTab;
       }
@@ -139,7 +147,12 @@ void loop()
         {
           //Calculate the actuation time based on the angle and actuate the correct trimtab
           double timeOfAct = Stabilization::CalculateTimeOfAct(current_position, 0);
-          Stabilization::ActuateTrimTab(activeTrimTab, timeOfAct);
+          bool isLeft = false;
+          if(tiltedLeft)
+          {
+            isLeft = true;
+          }
+          Stabilization::ActuateTrimTab(activeTrimTab, timeOfAct, isLeft);
         }
       }
 
