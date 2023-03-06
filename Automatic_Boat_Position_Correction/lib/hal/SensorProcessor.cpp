@@ -17,6 +17,8 @@ SensorProcessor::SensorProcessor(IAccelerometer& accel, IGyroscope& gyro)
 ,previousTime(0)
 ,elapsedTime(0)
 {
+    kalmanX = KalmanFilter(KALMAN_START_ANGLE, KALMAN_BIAS, KALMAN_MEASURE);
+    kalmanY = KalmanFilter(KALMAN_START_ANGLE, KALMAN_BIAS, KALMAN_MEASURE);
 }
 
 /*
@@ -89,10 +91,8 @@ Position SensorProcessor::GetLastRotationReadings(unsigned long ms)
 
 /*
     Gets the angular rotation of the sensor by first getting the roll and pitch from the accelerometer
-    then it integrates the gyroscope data over time to get angular rotation from the gyryscope
-    at last, a complementary filter is used to combined both datastreams for a more accurate representation
-
-    TODO:: Implement Kalman Filter here
+    then it integrates the gyroscope data over time to get angular rotation from the gyroscope
+    at last, a Kalman filter is used to combined both datastreams for a more accurate representation
 */
 Position SensorProcessor::GetFilteredRotation()
 {
@@ -109,14 +109,12 @@ Position SensorProcessor::GetFilteredRotation()
                                 rotation.y * elapsedTime + lastRotation.y,
                                 rotation.z * elapsedTime + lastRotation.z};
 
-
-    float alpha = 0.98;
-    Position filteredRotation = {alpha * integratedGyro.x + (1 - alpha) * pitch
-                                ,alpha * integratedGyro.y + (1 - alpha) * roll
-                                ,integratedGyro.z};
-
+    float kalmanPitch = kalmanX.update(pitch, rotation.x);
+    float kalmanRoll = kalmanY.update(roll, rotation.y);
+    
+    Position kalmanRotation = {kalmanPitch, kalmanRoll, integratedGyro.z};
     
     previousTime = currentTime;
-    lastRotation = filteredRotation;
-    return filteredRotation;
+    lastRotation = kalmanRotation;
+    return kalmanRotation;
 }
