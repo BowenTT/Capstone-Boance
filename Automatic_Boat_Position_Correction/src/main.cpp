@@ -147,20 +147,12 @@ void loop()
         {
           //Calculate the actuation time based on the angle and actuate the correct trimtab
           double timeOfAct = Stabilization::CalculateTimeOfAct(current_position, 0);
-          bool isLeft = false;
-          if(tiltedLeft)
-          {
-            isLeft = true;
-          }
-          Stabilization::ActuateTrimTab(activeTrimTab, timeOfAct, isLeft);
+          Stabilization::ActuateTrimTab(activeTrimTab, timeOfAct, tiltedLeft);
         }
       }
 
     while(PassiveState)
     {
-
-
-
       previous_position = current_position;
       current_position = sensorProcessor.GetLastRotationReadings(100);
 
