@@ -10,6 +10,7 @@ This project aims to develop a system that automatically corrects the posture of
 * [Requirements](#Requirements)
 * [Installation](#Installation)
 * [Usage](#Usage)
+* [Media](#Media)
 * [License](#License)
 
 ## Introduction
@@ -44,9 +45,9 @@ The system is designed to automatically correct the posture of the boat based on
 ## License
 This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/). 
 
-##
+## Media
+[![Team Boance Promo Video](https://youtu.be/vCHgTIyjQ4M)](https://youtu.be/vCHgTIyjQ4M)
+
 ![Team Boance Poster](https://github.com/BowenTT/Capstone-Boance/blob/main/Poster.jpg?raw=true)
 
 <!--<img src="https://github.com/BowenTT/Capstone-Boance/blob/main/Poster.jpg?raw=true" align="center" height="75%" width="75%" alt="Team Boance">-->
-
-[![Team Boance Promo Video](https://youtu.be/vCHgTIyjQ4M)](https://youtu.be/vCHgTIyjQ4M)
