@@ -17,9 +17,13 @@ double Stabilization::CalculateTimeOfAct(const Position& rotation, int speed)
 
 //Actuates the (servo) trim tab given the time of act, because the servo can only be written to a certain angle,
 //The decision had been made now to map the actuation time to angles given, so max actuation time of 5 seconds will result in max angle of the trim tab
-double Stabilization::ActuateTrimTab(PWMServo& trimtab, double timeOfAct)
+double Stabilization::ActuateTrimTab(PWMServo& trimtab, double timeOfAct, bool isLeft)
 {
     double angle = mapf(timeOfAct, 0, MAX_ACTUATION_TIME, 0, TRIMTAB_MAX_ANGLE);
+    if(isLeft)
+    {
+        angle = mapf(timeOfAct, 0, MAX_ACTUATION_TIME, TRIMTAB_MAX_ANGLE, 0);
+    }
     trimtab.write(angle);
     return angle;
 }
