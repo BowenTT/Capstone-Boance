@@ -48,3 +48,5 @@ This project is licensed under the [MIT License](https://choosealicense.com/lice
 ![Team Boance Poster](https://github.com/BowenTT/Capstone-Boance/blob/main/Poster.jpg?raw=true)
 
 <!--<img src="https://github.com/BowenTT/Capstone-Boance/blob/main/Poster.jpg?raw=true" align="center" height="75%" width="75%" alt="Team Boance">-->
+
+[![Team Boance Promo Video](https://youtu.be/vCHgTIyjQ4M)](https://youtu.be/vCHgTIyjQ4M)
